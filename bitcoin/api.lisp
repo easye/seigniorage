@@ -1,7 +1,7 @@
 (defpackage #:not.org.seigniorage 
   (:use #:cl #:sys)
   (:export 
-   #:fetch #:nth
+   #:fetch
    #:index 
    #:verify))
 
