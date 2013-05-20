@@ -26,10 +26,9 @@
     (let ((index :latest))
       (warn "Unimplemented."))))
 
-(defgeneric fetch (block)
-  (:documentation "Request the block from from the network"))
+(defgeneric fetch-nth (nth block)
+  (:documentation "Request the NTH BLOCK from from the network"))
 
-(defgeneric nth (n))
 
 
 

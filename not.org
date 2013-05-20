@@ -1,5 +1,7 @@
 # Seignorage
 
+Modeling distributed financial computations on Common Lisp
+
 Bitcoin on the Bear
 
 Mark <evenson@panix.com>
