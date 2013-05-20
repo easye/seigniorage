@@ -1,5 +1,5 @@
 (defpackage #:not.org.seigniorage 
-  (:use #:cl #:sys)
+  (:use #:cl)
   (:export 
    #:fetch
    #:index 
@@ -7,27 +7,36 @@
 
 (in-package #:not.org.seigniorage)
 
-#+nil
-(defgeneric index (uri)
-    (:method (&key (uri uri)) (make-pathname uri)))
-
-(defun index ()
-  (directory 
-   (make-pathname 
-    :name "*" :type "*" 
-    :defaults 
-    ;; OS X
-    (merge-pathnames "Library/Application Support/Bitcoin/"
-                     (user-homedir-pathname)))))
+(defgeneric fetch-nth (nth block)
+  (:documentation "Request the NTH BLOCK from from the network"))
 
 (defgeneric verify (chain) 
   (:documentation "Verify bitcoin CHAIN of hashes expressed as futures.")
   (:method (chain)
     (let ((index :latest))
-      (warn "Unimplemented."))))
+      (warn "Unimplemented ~A." index))))
 
-(defgeneric fetch-nth (nth block)
-  (:documentation "Request the NTH BLOCK from from the network"))
+(defgeneric index (uri &key)
+  (:method (uri &key (pathname pathname))
+    (make-pathname 
+     :defaults (if (pathname pathname)
+                   (merge-pathnames uri pathname)
+                   (pathname uri))))
+  (:method (uri &key (nth nth))
+    (fetch-nth nth block-0))
+  (:method (uri &key (index t))
+    (declare (ignore index uri))
+    (directory 
+     (make-pathname 
+      :name "*" :type "*" 
+      :defaults 
+      (cond
+        ((find :darwin *features*)
+         (merge-pathnames "Library/Application Support/Bitcoin/"
+                          (user-homedir-pathname)))
+        (t 
+         (merge-pathnames "~/.bitcoin/" (user-homedir-pathname))))))))
+  
 
 
 
