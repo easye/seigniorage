@@ -15,9 +15,9 @@
 
 
 (defgeneric verify (chain) 
-  (:documentation "Verify bitcoin CHAIN of hashes.  
+  (:documentation "Verify bitcoin block CHAIN
 
-If ASYNC is none-nil, returns a description of the steps necessary for
+If ASYNC is non-NIL, returns a description of the steps necessary for
 its computation expressed as futures as the second value, and a
 promise for its computation as the third.")
   (:method (chain)
@@ -40,7 +40,8 @@ promise for its computation as the third.")
                   ((find :darwin *features*)
                    (merge-pathnames "Library/Application Support/Bitcoin/"
                                     (user-homedir-pathname)))
-                  (t 
+                  ((or (find :windows *features*) ;;; XXX implement me!
+                       t)
                    (merge-pathnames "~/.bitcoin/" (user-homedir-pathname))))))))
   
 (defgeneric fetch (block)
