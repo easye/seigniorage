@@ -1,9 +1,12 @@
 # Seignorage
 
-Modeling distributed financial computations on Common Lisp
+Modeling distributed financial computations on Common Lisp by
+verifiying the operation of the Bitcoin BTC network.
 
-Bitcoin on the Bear
+A formal semantic verification is sought that may optionally be
+computed via a description of futures.
+
 
 Mark <evenson@panix.com>
 Created:  01-JAN-2013
-Revised:  20-MAY-2013
+Revised:  06-JUN-2013
