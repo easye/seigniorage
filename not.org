@@ -1,11 +1,10 @@
-# Seignorage
+# Seiginorage
 
-Modeling distributed financial computations on Common Lisp by
-verifiying the operation of the Bitcoin BTC network.
+Modeling distributed computations on Common Lisp (CL) by verifiying
+the operation of the Bitcoin (BTC) network.
 
 A formal semantic verification is sought that may optionally be
-computed via a description of futures.
-
+computed via a description of its futures.
 
 Mark <evenson@panix.com>
 Created:  01-JAN-2013

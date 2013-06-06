@@ -3,7 +3,7 @@
 
 ;;     :documentation "urn:seignorage rdfs:seeAlso <http://abcl.org/home/evenson/bitcoin.lisp> ."
 (asdf:defsystem :seigniorage 
-  :version "0.2.0" 
+  :version "0.2.1" 
   :components ((:module bitcoin 
                         :components ((:file "api")))))
 

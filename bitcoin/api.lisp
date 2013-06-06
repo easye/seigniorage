@@ -1,9 +1,12 @@
 (defpackage #:not.org.seigniorage 
   (:use #:cl)
   (:export 
-   #:nth-block
    #:fetch
    #:index 
+
+   #:nth-block
+
+   ;;; Semantically verify a given blockchain by transcribing its futures
    #:verify))
 
 (in-package #:not.org.seigniorage)
@@ -12,7 +15,6 @@
   (:documentation "Request the NTH BLOCK from from the network")
   (:method (n chain)
     (nth n (fetch chain))))
-
 
 (defgeneric verify (chain) 
   (:documentation "Verify bitcoin block CHAIN
@@ -25,13 +27,13 @@ promise for its computation as the third.")
       (warn "Unimplemented ~A." index))))
 
 (defgeneric index (uri &key)
-  (:method (uri &key (pathname pathname))
+  (:method (uri &key pathname)
     (make-pathname 
      :defaults (if (pathname pathname)
                    (merge-pathnames uri pathname)
                    (pathname uri))))
-  (:method (uri &key (nth nth))
-    (fetch-nth nth block-0))
+  (:method (uri &key nth)
+    (nth-block nth (truename uri)))
   (:method (uri &key (index t))
     (declare (ignore index uri))
     (directory 
@@ -47,5 +49,3 @@ promise for its computation as the third.")
 (defgeneric fetch (block)
   (:documentation "Request the block from from the network"))
 
-
-    
