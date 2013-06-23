@@ -7,10 +7,11 @@
   :components ((:module bitcoin 
                         :components ((:file "api")))))
 
-
+#-abcl (error "Currently need the Bear. <http://abcl.org>.")
+#+abcl (require :abcl-contrib)
 (asdf:defsystem :seigniorage.model
   :version "0.1" 
-  :system-depends-on (abcl-contrib jeannie)
+  :defsystem-depends-on (jeannie)
   :components ((:module bitcoin 
                         :components ((:file "model")))))
   

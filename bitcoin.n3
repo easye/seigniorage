@@ -4,9 +4,28 @@
 # idea,but still it gives a concise definition of what is to be done.
 
 @prefix btc:          <https://btc.not.org#> .
-@prefix cl:           <https://cl.not.org#> .
+
+# Symbols from the Common Lisp COMMON-LISP and KEYWORD packages.
+@prefix cl:           <urn:common-lisp/packages/common-lisp#> .
+@prefix :             <urn:common-lisp/packages/keyword#> .
+
+# Model and implementations of cryptographic algorithms.
 @prefix crypto:       <https://crypto.not.org#> .
-@prefix future:       <https://.not.org#> .
+
+# Description of delayed future computations, currently expressed as
+#  Common Lisp s-expr
+@prefix future:       <https://future.not.org#> .
+
+# ??? Some way to do #include like directives?
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+# The Cert ontology as used by WebID
+@prefix cert:         <http://www.w3.org/ns/auth/cert#> .
+
+<> 
+   rdfs:seeAlso <https://en.bitcoin.it/wiki/Protocol_specification> .
 
 btc:address 
   a (_:version 
@@ -14,21 +33,76 @@ btc:address
      _:checksum 
      _:address) .
 
-# Needs to be scoped to btc:address ... 
-_:key-hash future:computed-by 
-           (cl:plus _:version 
-                    (crypto:ripemd (crypto:sha256 (crypto:sha256 _:public-key)))) .
+# XXX Needs to be scoped to btc:address, but it feels wrong to mix
+#     anonymous nodes here, as they may be anywhere in the document.
 
+
+[btc:address _:version] a (cl:quote "unsigned-byte" 8) .
+
+[btc:address _:version]
+  cl:type-of "(unsigned-byte 8)" ;
+  rdfs:label "1 byte of 0 (zero); on the test network, this is 1 byte of 111." .
+
+[btc:address _:key-hash]
+  future:yields
+           (cl:concatenate 
+              (cl:quote "string")
+              _:version 
+              (crypto:ripemd (crypto:sha256 (crypto:sha256 _:public-key)))) ;
+  a xsd:string ;
+  cl:type-of "(string)" . # !!! check cl:type-of
+
+[btc:address _:checksum ]
+  future:yields
+            (cl:subseq (crypto:double-sha-256 _:key-hash)
+                       0 4) ;
+  cl:type-of "(vector (unsigned-byte 8) 4)" .
+ 
 btc:network-node  
   a (_:time 
      _:services 
      _:ip) .
+
+# [btc:network-node _:ip]  can be IP4 or IP6
+
 btc:message 
   a (_:magic 
      _:command
      _:length
      _:checksum
-     _:payload ).
+     _:payload ) .
+
+_:magic 
+  cl:type-of "(integer 2147483648)" ;
+  rdfs:label """"Magic value indicating message origin network, and used to 
+                 seek to next message when stream state is unknown""" .
+
+# _:magic is practically a sparse enumeration of these values
+btc:main     :magic 	"0xD9B4BEF9" . #	F9 BE B4 D9
+btc:testnet  :magic 	"0xDAB5BFFA" . #	FA BF B5 DA
+btc:testnet3 :magic	"0x0709110B" . #	0B 11 09 07
+btc:namecoin :magic     "0xFEB4BEF9" . #	F9 BE B4 FE 
+
+_:command
+  cl:type-of "(simple-base-string 12)" ;
+  rdf:label """ASCII string identifying the packet content, NULL padded 
+               (non-NULL padding results in packet rejected)""" .
+
+[btc:message _:payload]
+  rdfs:label "Length of payload in number of bytes" ;
+  cl:type-of  "(integer 2147483648)" .
+
+[btc:message _:checksum] 
+  cl:type-of "(integer 2147483648)" ;             
+  rdfs:label "First 4 bytes of sha256(sha256(payload))" ;
+  future:yields
+     (cl:subseq (crypto:sha256 (crypto:sha256 [btc:message _:payload]))
+                0 4) .
+
+[btc:message _:payload]
+   cl:type-of "(vector unsigned-byte *)" ;
+   rdfs:label "The actual data" .
+                          
 btc:block-header
   a (_:version
      _:previous-block
