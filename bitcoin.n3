@@ -1,0 +1,45 @@
+# -*- Mode: n3 -*-# -*- Mode: n3 -*-
+
+# Just becuase it is possible syntactically, doesn't make this a good
+# idea,but still it gives a concise definition of what is to be done.
+
+@prefix btc:          <https://btc.not.org#> .
+@prefix cl:           <https://cl.not.org#> .
+@prefix crypto:       <https://crypto.not.org#> .
+@prefix future:       <https://.not.org#> .
+
+btc:address 
+  a (_:version 
+     _:key-hash 
+     _:checksum 
+     _:address) .
+
+# Needs to be scoped to btc:address ... 
+_:key-hash future:computed-by 
+           (cl:plus _:version 
+                    (crypto:ripemd (crypto:sha256 (crypto:sha256 _:public-key)))) .
+
+btc:network-node  
+  a (_:time 
+     _:services 
+     _:ip) .
+btc:message 
+  a (_:magic 
+     _:command
+     _:length
+     _:checksum
+     _:payload ).
+btc:block-header
+  a (_:version
+     _:previous-block
+     _:merkle-root
+     _:timestamp
+     _:bits
+     _:nonce
+     _:transaction-count) .
+
+     
+    
+
+               
+               
