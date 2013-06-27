@@ -1,15 +1,4 @@
-(defpackage #:not.org.seigniorage 
-  (:use #:cl)
-  (:export 
-   #:fetch
-   #:index 
-
-   #:nth-block
-
-   ;;; Semantically verify a given blockchain by transcribing its futures
-   #:verify))
-
-(in-package #:not.org.seigniorage)
+(in-package :org.not.seigniorage)
 
 (defgeneric nth-block (nth block)
   (:documentation "Request the NTH BLOCK from from the network")

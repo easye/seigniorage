@@ -1,4 +1,4 @@
-(in-package #:not.org.seigniorage)
+(in-package :org.not.seigniorage)
 
 #|
 

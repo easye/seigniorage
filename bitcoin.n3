@@ -1,8 +1,9 @@
 # -*- Mode: n3 -*-
 
 # Just becuase it is possible syntactically, doesn't make this a good
-# idea,but still it gives a concise definition of what is to be done.
+# idea, but still it gives a concise definition of what is to be done.
 
+@prefix dc:              <http://purl.org/dc/elements/1.1/> .
 <> dc:updated "01-JUL-2013" .
 
 @prefix btc:          <https://btc.not.org#> .
@@ -11,17 +12,19 @@
 @prefix cl:           <urn:common-lisp/packages/common-lisp#> .
 @prefix :             <urn:common-lisp/packages/keyword#> .
 
-# Model and implementations of cryptographic algorithms.
+# Model of cryptographic algorithms implementations.
 @prefix crypto:       <https://crypto.not.org#> .
 
 # Description of delayed future computations, currently expressed as
-#  Common Lisp s-expr
+# Common Lisp s-expr
 @prefix future:       <https://future.not.org#> .
 
 # ??? Some way to do #include like directives?
 @prefix rdf:         <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs:        <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix xsd:         <http://www.w3.org/2001/XMLSchema#> .
+
+@prefix ansi-c:       <urn:ansi-c/types#> .
 
 # The Cert ontology as used by WebID
 @prefix cert:        <http://www.w3.org/ns/auth/cert#> .
@@ -38,12 +41,10 @@ btc:address
 # XXX Needs to be scoped to btc:address, but it feels wrong to mix
 #     anonymous nodes here, as they may be anywhere in the document.
 
-
-[btc:address _:version] a (cl:quote "unsigned-byte" 8) .
-
 [btc:address _:version]
   cl:type-of "(unsigned-byte 8)" ;
-  rdfs:label "1 byte of 0 (zero); on the test network, this is 1 byte of 111." .
+  ansi-c:type "uint32_t" ;
+  rdfs:label "1 byte of 0 (zero); on the test network, this is 1 byte of 111." . # "111" in binary?
 
 [btc:address _:key-hash]
   future:yields
@@ -52,14 +53,20 @@ btc:address
               _:version 
               (crypto:ripemd (crypto:sha256 (crypto:sha256 _:public-key)))) ;
   a xsd:string ;
-  cl:type-of "(string)" . # !!! check cl:type-of
+  cl:type-of "(simple-base-string *)" . # XXX what is the cardinality?
 
 [btc:address _:checksum ]
   future:yields
-            (cl:subseq (crypto:double-sha-256 _:key-hash)
-                       0 4) ;
+    (cl:subseq (crypto:double-sha-256 _:key-hash)
+               0 4) ;
   cl:type-of "(vector (unsigned-byte 8) 4)" .
- 
+
+[btc:address _:address ]
+  future:yields
+    (crypto:base-58-encode (cl:concatenate (cl:quote "string") # XXX how to do quotes...
+                             _:key-hash
+                             _:checksum)) .
+
 btc:network-node  
   a (_:time 
      _:services 
@@ -87,15 +94,16 @@ btc:namecoin :magic     "0xFEB4BEF9" . #	F9 BE B4 FE
 
 _:command
   cl:type-of "(simple-base-string 12)" ;
+  cl:assert _:null-padded-string ;
   rdf:label """ASCII string identifying the packet content, NULL padded 
                (non-NULL padding results in packet rejected)""" .
 
 [btc:message _:payload]
   rdfs:label "Length of payload in number of bytes" ;
-  cl:type-of  "(integer 2147483648)" .
+  cl:type-of  "(cl:make-array 4 :element-type 'unsigned-byte))" .  
 
 [btc:message _:checksum] 
-  cl:type-of "(integer 2147483648)" ;             
+  cl:type-of "(cl:make-array 4 :element-type 'unsigned-byte))" ;             
   rdfs:label "First 4 bytes of sha256(sha256(payload))" ;
   future:yields
      (cl:subseq (crypto:sha256 (crypto:sha256 [btc:message _:payload]))
