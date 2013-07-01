@@ -1,7 +1,9 @@
-# -*- Mode: n3 -*-# -*- Mode: n3 -*-
+# -*- Mode: n3 -*-
 
 # Just becuase it is possible syntactically, doesn't make this a good
 # idea,but still it gives a concise definition of what is to be done.
+
+<> dc:updated "01-JUL-2013" .
 
 @prefix btc:          <https://btc.not.org#> .
 
@@ -17,15 +19,15 @@
 @prefix future:       <https://future.not.org#> .
 
 # ??? Some way to do #include like directives?
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf:         <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:        <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:         <http://www.w3.org/2001/XMLSchema#> .
 
 # The Cert ontology as used by WebID
-@prefix cert:         <http://www.w3.org/ns/auth/cert#> .
+@prefix cert:        <http://www.w3.org/ns/auth/cert#> .
 
 <> 
-   rdfs:seeAlso <https://en.bitcoin.it/wiki/Protocol_specification> .
+   rdfs:seeAlso      <https://en.bitcoin.it/wiki/Protocol_specification> .
 
 btc:address 
   a (_:version 
