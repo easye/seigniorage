@@ -114,6 +114,9 @@ btc:block-header
      _:nonce
      _:transaction-count) .
 
+<urn:bitcoinj.not.org> rdfs:seeAlso <http://duckduckgo.com?q=bitcoinj> .
+
+
      
     
 
