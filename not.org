@@ -8,10 +8,18 @@ computed via a description of its futures.
 
 Transcribe bitcoinj micro-transactions.
 
+## Verfication
+
+### Bitcoinj 0.11 
+
+Use locally installed [bitcoinj][] Maven artifacts.
+
+[bitcoinj]: git+https://code.google.com/p/bitcoinj/
+
 ## Colophon
 =======
 "Workers of the world, untie!"
 
 Mark <evenson@panix.com>
 Created:  01-JAN-2013
-Revised:  01-JUL-2013
+Revised:  15-AUG-2013

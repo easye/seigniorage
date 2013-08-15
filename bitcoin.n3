@@ -4,7 +4,7 @@
 # idea, but still it gives a concise definition of what is to be done.
 
 @prefix dc:              <http://purl.org/dc/elements/1.1/> .
-<> dc:updated "01-JUL-2013" .
+<> dc:updated "15-AUG-2013" .
 
 @prefix btc:          <https://btc.not.org#> .
 
@@ -122,7 +122,9 @@ btc:block-header
      _:nonce
      _:transaction-count) .
 
-<urn:bitcoinj.not.org> rdfs:seeAlso <http://duckduckgo.com?q=bitcoinj> .
+<urn:bitcoinj.not.org> 
+  rdfs:seeAlso <http://duckduckgo.com?q=bitcoinj> ;
+  rdfs:seeAlso <file:bitcoinj.asd> .
 
 
      
