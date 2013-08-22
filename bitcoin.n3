@@ -1,6 +1,6 @@
 # -*- Mode: n3 -*-
 
-# Just becuase it is possible syntactically, doesn't make this a good
+# Just because it is possible syntactically, doesn't make this a good
 # idea, but still it gives a concise definition of what is to be done.
 
 @prefix dc:              <http://purl.org/dc/elements/1.1/> .
