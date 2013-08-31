@@ -12,14 +12,15 @@ Transcribe bitcoinj micro-transactions.
 
 ### Bitcoinj 0.11 
 
-Use locally installed [bitcoinj][] Maven artifacts.
+The ASDF system enacapsulated in <file:bitcoinj.asd> needs locally
+installed [bitcoinj][] Maven artifacts to work, as they are not
+currently distributed over the global network.
 
 [bitcoinj]: git+https://code.google.com/p/bitcoinj/
 
-## Colophon
-=======
+### Colophon
 "Workers of the world, untie!"
 
 Mark <evenson@panix.com>
 Created:  01-JAN-2013
-Revised:  15-AUG-2013
+Revised:  31-AUG-2013

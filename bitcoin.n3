@@ -63,9 +63,13 @@ btc:address
 
 [btc:address _:address ]
   future:yields
-    (crypto:base-58-encode (cl:concatenate (cl:quote "string") # XXX how to do quotes...
+    (crypto:base-58-encode (cl:concatenate (cl:quote "string") 
                              _:key-hash
                              _:checksum)) .
+
+
+# XXX How to do CL quotes: is (cl:quote "string") the best way we can
+#     transcribe 'string?
 
 btc:network-node  
   a (_:time 
@@ -73,6 +77,11 @@ btc:network-node
      _:ip) .
 
 # [btc:network-node _:ip]  can be IP4 or IP6
+
+[btc:network-node _:ip] a crypto:big-endian.
+
+<> rdfs:label "Almost all integers are encoded in little endian. Only IP or port number are encoded big endian." .
+
 
 btc:message 
   a (_:magic 
@@ -86,6 +95,7 @@ _:magic
   rdfs:label """"Magic value indicating message origin network, and used to 
                  seek to next message when stream state is unknown""" .
 
+
 # _:magic is practically a sparse enumeration of these values
 btc:main     :magic 	"0xD9B4BEF9" . #	F9 BE B4 D9
 btc:testnet  :magic 	"0xDAB5BFFA" . #	FA BF B5 DA
@@ -98,7 +108,7 @@ _:command
   rdf:label """ASCII string identifying the packet content, NULL padded 
                (non-NULL padding results in packet rejected)""" .
 
-[btc:message _:payload]
+[btc:message _:length]
   rdfs:label "Length of payload in number of bytes" ;
   cl:type-of  "(cl:make-array 4 :element-type 'unsigned-byte))" .  
 
@@ -126,9 +136,23 @@ btc:block-header
   rdfs:seeAlso <http://duckduckgo.com?q=bitcoinj> ;
   rdfs:seeAlso <file:bitcoinj.asd> .
 
+btc:network-address
+  a (_:time
+     _:services
+     _:ip
+     _:port) .
 
+[btc:network-address _:time] 
+  ansi-c:type "uint32_t" ;
+  rdfs:label "the Time (version >= 31402)". 
+
+[btc:network-address _:services] 
+   ansi-c:type "uint64_t" ;
+   rdfs:label "same service(s) listed in version" .
+
+[btc:network-address _:ip] cl:type-of "(cl:make-array 16 :element-type 'unsigned-byte))" .
      
-    
+[btc:network-address _:port]   ansi-c:type "uint16_t" ;
 
                
                

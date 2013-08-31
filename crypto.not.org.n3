@@ -14,5 +14,14 @@
 
 @prefix future:       <https://future.not.org#> .
 
+# ??? Some way to do #include like directives?
+@prefix rdf:         <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:        <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:         <http://www.w3.org/2001/XMLSchema#> .
 
+# FIXME
 crypto:entropy: future:yields _:entropy .
+
+# Miscellanies
+crypto:big-endian rdfs:label "Representation of number has high-order bytes first." .
+crypto:little-endian rdfs:label "Representation of number has low-order bytes first." .
