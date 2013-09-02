@@ -1,4 +1,4 @@
-# Seiginorage
+# Seigniorage
 
 Model and implementation of distributed computations on Common Lisp
 (CL) by verifiying the operation of the Bitcoin (BTC) network.
@@ -23,4 +23,4 @@ currently distributed over the global network.
 
 Mark <evenson@panix.com>
 Created:  01-JAN-2013
-Revised:  31-AUG-2013
+Revised:  02-AUG-2013
