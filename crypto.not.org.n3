@@ -9,8 +9,7 @@
 
 # Symbols from the Common Lisp COMMON-LISP and KEYWORD packages.
 @prefix cl:           <urn:common-lisp/packages/common-lisp#> .
-@prefix keyword:             <urn:common-lisp/packages/keyword#> .
-
+@prefix keyword:      <urn:common-lisp/packages/keyword#> .
 
 @prefix future:       <https://future.not.org#> .
 
@@ -20,8 +19,10 @@
 @prefix xsd:         <http://www.w3.org/2001/XMLSchema#> .
 
 # FIXME
-crypto:entropy: future:yields _:entropy .
+crypto:entropy:			future:yields	_:entropy .
 
 # Miscellanies
-crypto:big-endian rdfs:label "Representation of number has high-order bytes first." .
-crypto:little-endian rdfs:label "Representation of number has low-order bytes first." .
+crypto:big-endian 
+  rdfs:label "Representation of number has high-order bytes first." .
+crypto:little-endian 
+  rdfs:label "Representation of number has low-order bytes first." .
