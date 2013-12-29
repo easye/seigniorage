@@ -98,9 +98,9 @@ _:magic
 
 # _:magic is practically a sparse enumeration of these values
 btc:main     :magic     "0xD9B4BEF9" . #    F9 BE B4 D9
-btc:testnet  :magic     "0xDAB5BFFA" . #	FA BF B5 DA
-btc:testnet3 :magic	    "0x0709110B" . #	0B 11 09 07
-btc:namecoin :magic     "0xFEB4BEF9" . #	F9 BE B4 FE 
+btc:testnet  :magic     "0xDAB5BFFA" . #    FA BF B5 DA
+btc:testnet3 :magic     "0x0709110B" . #    0B 11 09 07
+btc:namecoin :magic     "0xFEB4BEF9" . #    F9 BE B4 FE 
 
 _:command
   cl:type-of "(simple-base-string 12)" ;
