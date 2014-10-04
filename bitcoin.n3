@@ -38,6 +38,9 @@ btc:address
      _:checksum 
      _:address) .
 
+# XXX
+btc:address org.not:note crypto:bigendian .
+
 # XXX Needs to be scoped to btc:address, but it feels wrong to mix
 #     anonymous nodes here, as they may be anywhere in the document.
 
