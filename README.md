@@ -28,6 +28,6 @@ currently distributed over the global network.
 "Workers of the world, untie!"
 
     Mark <evenson@panix.com> <evenson.not.org@gmail.com>
-    Created: 05-APR-2015
+    Created: 01-JAN-2013
     Revised: 05-APR-2015
 
