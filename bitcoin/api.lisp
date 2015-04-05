@@ -5,13 +5,13 @@
   (:method (n chain)
     (nth n (fetch chain))))
 
-(defgeneric verify (chain) 
+(defgeneric verify (chain  &key async)
   (:documentation "Verify bitcoin block CHAIN
 
-If ASYNC is non-NIL, returns a description of the steps necessary for
-its computation expressed as futures as the second value, and a
-promise for its computation as the third.")
-  (:method (chain)
+When ASYNC return a description of the steps necessary for its
+computation expressed as futures as the second value, and a promise
+for its computation as the third.")
+  (:method (chain &key (async t))
     (let ((index :latest))
       (warn "Unimplemented ~A." index))))
 
