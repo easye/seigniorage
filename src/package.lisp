@@ -7,8 +7,8 @@
 
    #:nth-block
 
-   ;;; Verify a given blockchain by transcribing its futures
-   #:verify))
+   ;;; Verify a given block of the blockchain by transcribing its futures
+   #:block-verify))
 
 (defpackage :org.not.seigniorage.test 
   (:nicknames "seigniorage-test")

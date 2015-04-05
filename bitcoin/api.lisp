@@ -5,7 +5,7 @@
   (:method (n chain)
     (nth n (fetch chain))))
 
-(defgeneric verify (chain  &key async)
+(defgeneric block-verify (chain  &key async)
   (:documentation "Verify bitcoin block CHAIN
 
 When ASYNC return a description of the steps necessary for its
