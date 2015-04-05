@@ -12,6 +12,7 @@ When ASYNC return a description of the steps necessary for its
 computation expressed as futures as the second value, and a promise
 for its computation as the third.")
   (:method (chain &key (async t))
+    (declare (ignore async))
     (let ((index :latest))
       (warn "Unimplemented ~A." index))))
 
