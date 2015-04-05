@@ -1,7 +1,8 @@
 (defpackage :org.not.seigniorage.secp256k1
   (:nicknames :secp256k1)
   (:use :cl :seigniorage)
-  (:export #:verify #:sign))
+  (:export #:verify #:sign
+           #:*secp256k1*))
 
 (in-package :secp256k1)
 

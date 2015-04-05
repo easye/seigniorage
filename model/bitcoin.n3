@@ -268,4 +268,19 @@ btc-ecdsa:rfc6979-nonce
 nonce_function_rfc6979(unsigned char *nonce32, const unsigned char *msg32, const unsigned char *key32, unsigned int counter, const void *data)
 """ .
 
+btc-ecdsa:p
+  a xsd:integer;
+  future:yields 
+"""(- (expt 2 256) (expt 2 32) (expt 2 9) (expt 2 8) (expt 2 7) (expt 2 6) (expt 2 4) 1))""".
+
+btc-ecdsa:a
+  a xsd:integer;
+  future:yields 0.
+
+btc-ecdsa:g 
+  a xsd:integer;
+  future:yields
+"""
+0479BE667EF9DCBBAC55A06295CE870B07029BFCDB2DCE28D959F2815B16F81798483ADA7726A3C4655DA4FBFC0E1108A8 FD17B448A68554199C47D08FFB10D4B8
+""" .
 

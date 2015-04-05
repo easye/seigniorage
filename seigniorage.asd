@@ -40,4 +40,7 @@
 (asdf:defsystem :seigniorage/secp256k1
   :version "0.0.1"
   :depends-on (seigniorage)
-  :components ((:module secp256k1 :components ((:file "index")))))
+  :components ((:module secp256k1
+                        :serial t
+                        :components ((:file "index")
+                                     (:file "secp256k1")))))
