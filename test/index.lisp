@@ -3,8 +3,8 @@
 (deftest model.1 
     (let ((result
            (jena:read-rdf 
-            (asdf:system-relative-pathname :seigniorage.model
-                                           "bitcoin.n3"))))
+            (asdf:system-relative-pathname :seigniorage
+                                           "model/bitcoin.n3"))))
       (values t result))
   (t t))
 

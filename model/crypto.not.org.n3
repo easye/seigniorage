@@ -1,0 +1,28 @@
+# -*- Mode: n3 -*-
+# Model of cryptographic algorithms implementations.
+@prefix crypto:       <https://crypto.not.org#> .
+
+@prefix dc:              <http://purl.org/dc/elements/1.1/> .
+<> dc:updated "22-AUG-2013" .
+
+@prefix btc:          <https://btc.not.org#> .
+
+# Symbols from the Common Lisp COMMON-LISP and KEYWORD packages.
+@prefix cl:           <urn:common-lisp/packages/common-lisp#> .
+@prefix keyword:      <urn:common-lisp/packages/keyword#> .
+
+@prefix future:       <https://future.not.org#> .
+
+# ??? Some way to do #include like directives?
+@prefix rdf:         <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:        <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:         <http://www.w3.org/2001/XMLSchema#> .
+
+# FIXME
+crypto:entropy:			future:yields	_:entropy .
+
+# Miscellanies
+crypto:big-endian 
+  rdfs:label "Representation of number has high-order bytes first." .
+crypto:little-endian 
+  rdfs:label "Representation of number has low-order bytes first." .

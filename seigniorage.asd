@@ -28,11 +28,11 @@
   
 (asdf:defsystem :seigniorage/test
   :version "0.0.1" 
-  :depends-on (seigniorage.model seigniorage)
+  :depends-on (seigniorage/model seigniorage)
   :components ((:module test :pathname "test"
                         :components ((:file "index")))))
 
 ;;;  Run manually via (asdf:operate 'asdf:test-op :seigniorage.test :force t)
 (defmethod asdf:perform ((o asdf:test-op) (c (eql (asdf:find-system :seigniorage))))
-  (asdf:load-system (asdf:find-system :seigniorage.test))
+  (asdf:load-system (asdf:find-system :seigniorage/test))
   (funcall (intern (symbol-name 'invoke) :org.not.seigniorage.test)))
