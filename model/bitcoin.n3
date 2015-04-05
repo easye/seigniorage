@@ -255,15 +255,17 @@ btc-ecdsa:verify
 int secp256k1_ecdsa_verify(const unsigned char *msg32, const unsigned char *sig, int siglen, const unsigned char *pubkey, int pubkeylen)
 """ .
 
+btc-ecdsa:sign
+        rdfs:comment
+"""
+const unsigned char *msg32, unsigned char *signature, int *signaturelen, const unsigned char *seckey, secp256k1_nonce_function_t noncefp, const void* noncedata
+"""  .
+
+
 btc-ecdsa:rfc6979-nonce
         rdfs:comment
 """
 nonce_function_rfc6979(unsigned char *nonce32, const unsigned char *msg32, const unsigned char *key32, unsigned int counter, const void *data)
 """ .
 
-btc-ecdsa:sign
-        rdfs:comment
-"""
-const unsigned char *msg32, unsigned char *signature, int *signaturelen, const unsigned char *seckey, secp256k1_nonce_function_t noncefp, const void* noncedata
-"""  .
 

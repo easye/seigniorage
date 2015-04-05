@@ -36,3 +36,8 @@
 (defmethod asdf:perform ((o asdf:test-op) (c (eql (asdf:find-system :seigniorage))))
   (asdf:load-system (asdf:find-system :seigniorage/test))
   (funcall (intern (symbol-name 'invoke) :org.not.seigniorage.test)))
+
+(asdf:defsystem :seigniorage/secp256k1
+  :version "0.0.1"
+  :depends-on (seigniorage)
+  :components ((:module secp256k1 :components ((:file "index")))))

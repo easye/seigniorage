@@ -1,5 +1,5 @@
 (defpackage :org.not.seigniorage 
-  (:nicknames "seigniorage")
+  (:nicknames :seigniorage)
   (:use #:cl)
   (:export 
    #:fetch
