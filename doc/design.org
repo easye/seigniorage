@@ -1,0 +1,15 @@
+Notes on the design
+===================
+
+The semantic description should be made in such a way that it
+transcribes the futures of the necessary computation in a descriptive
+(ala Prolog and successors like OWL2) rather than prescriptive manner.
+In this sense, the idea is akin to the reactive programming movement,
+but was not originally inspired by it  as such (insofar as both have
+roots in Prolog.
+
+The problem we aim to solve lies in how we trust code to mediate
+relationships, with the application here being the Bitcoin blockchain.
+
+
+<https://en.wikipedia.org/wiki/Reactive_programming>
