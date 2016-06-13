@@ -4,7 +4,7 @@
   ;; <http://bitcoinj.github.io>
   ;; "git+https://code.google.com/p/bitcoinj/"
   :components ((:mvn
-                "org.bitcoinj/bitcoinj-core/0.12.3"
+                "org.bitcoinj/bitcoinj-core/0.14.2"
                 #+nil "org.bitcoinj/bitcoinj-core/0.12.3")))
 
 
