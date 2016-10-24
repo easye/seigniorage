@@ -1,0 +1,156 @@
+# -*- Mode: n3 -*-
+# Model of cryptographic algorithms implementations.
+@prefix blake:       <https://crypto.not.org/digest/blake2b/model#> .
+
+# Symbols from the Common Lisp COMMON-LISP and KEYWORD packages.
+@prefix cl:           <urn:common-lisp/packages/common-lisp#> .
+@prefix :             <urn:common-lisp/packages/keyword#> .
+
+@prefix rdf:         <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:        <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix xsd:         <http://www.w3.org/2001/XMLSchema#> .
+
+
+@prefix dc:              <http://purl.org/dc/elements/1.1/> .
+<> dc:created "24-OCT-2016" ;
+   dc:author <urn:me> .
+
+<> rdfs:seeAlso <https://blake2.net/blake2.pdf> .
+
+blake:model rdfs:label
+"""
+
+The compression function initialization phase is modified to:
+v0 v1 v2 v3  h0
+h1 h5 IV1
+t1 ⊕IV5
+h2 h6 IV2
+f0 ⊕IV6
+h3  h7 
+IV3  f1 ⊕IV7
+""" .
+
+
+blake:model rdfs:label """
+A.1 BLAKE2b
+BLAKE2b supports data of any byte length 0 ≤ l < 2128. 
+Data is first padded as per §§2.3 to form a sequence of N = ⌈l/128⌉ 16-word blocks m0, m1, . . . , mN−1, 
+and then hashed by doing 
+
+h0 ← IV ⊕ P
+for i = 0, . . . , N − 1
+    hi+1 ← compress(hi, mi, li) 
+return hN
+
+where 
+li denotes the number of data bytes in m0, m1, . . . , mi (that is, not counting any padding byte), 
+
+P is the parameter block specified in §§2.8, 
+and IV is (as in BLAKE and SHA-512) the following 64-bit words:
+
+IV0 = 6a09e667f3bcc908 
+IV1 = bb67ae8584caa73b 
+IV2 = 3c6ef372fe94f82b 
+IV3 = a54ff53a5f1d36f1 
+IV4 = 510e527fade682d1 
+IV5 = 9b05688c2b3e6c1f 
+IV6 = 1f83d9abfb41bd6b
+IV7 = 5be0cd19137e2179
+
+The compression function compress takes as input 
+• a 64-byte chain value h = h0,...,h7
+• a 128-byte message block m = m0,...,m15
+• a counter t = t0, t1, and finalization flags f0, f1
+
+
+First, compress initializes a 16-word internal state v0, . . . , v15 as per §§2.4, that is
+v0 v1 v2 v3  h0
+
+((v0 v1 v2 v3)
+ (v4 v5 v6 v7)
+ (v8 v9 v10 v11)
+ (v12 v13 v14 v15))
+<--
+((h0 h1 h2 h3)
+ (h4 h5 h6 h7)
+ (iv0 iv1 iv2 iv3)
+ (t0⊕iv4 t1⊕iv5 f0⊕iv6 f1⊕iv7))
+""" .
+
+blake:model rdfs:label
+"""
+BLAKE2 introduces finalization flags f0 and f1, as auxiliary inputs to the compression function:
+
+• The security functionality of the padding is transferred to a
+  finalization flag f0, a word set to ff...ff if the block processed
+  is the last, and to 00...00 otherwise. The flag f0 is 64-bit for
+  BLAKE2b, and 32-bit for BLAKE2s.
+
+• A second finalization flag f1 is used to signal the last node of a
+  layer in tree-hashing modes. When processing the last block—that is,
+  when f0 is ff...ff—the flag f1 is also set to ff...ff if the node
+  considered is the last, and to 00...00 otherwise.
+
+""" .
+
+
+blake:model rdfs:label """
+
+The G function of BLAKE2b is defined as:
+
+a ← a+b+mσr(2i) 
+
+d ← (d⊕a)≫32
+
+c ← c+d
+
+b ← (b⊕c)≫24
+
+a ← a+b+mσr(2i+1) 
+
+d ← (d⊕a)≫16
+
+c ← c+d
+b ← (b⊕c)≫63
+
+• General parameters:
+
+– Digest byte length (1byte): an integer in [1,64] for BLAKE2b, in [1,32] forBLAKE2s
+
+– Key byte length (1 byte): an integer in [0, 64] for BLAKE2b, in [0, 32] for BLAKE2s  (set to 0 if no key is used)
+
+– Salt (16 or 8 bytes): an arbitrary string of 16 bytes for BLAKE2b, and 8 bytes for BLAKE2s (set to all-NULL by default)
+
+– Personalization (16 or 8 bytes): an arbitrary string of 16 bytes for BLAKE2b, and 8 bytes for BLAKE2s (set to all-NULL by default)
+
+• Tree hashing parameters:
+
+– Fanout (1 byte): an integer in [0, 255] (set to 0 if unlimited, and to 1 only in sequential mode)
+
+– Maximal depth (1 byte): an integer in [1, 255] (set to 255 if unlimited, and to 1 only in sequential mode)
+
+– Leaf maximal byte length (4 bytes): an integer in [0, 232 − 1], that is, up to 4 GiB (set to 0 if unlimited, or in sequential mode)
+
+– Node offset (8 or 6 bytes): an integer in [0, 264 − 1] for BLAKE2b, and in [0, 248 − 1] for BLAKE2s (set to 0 for the first, leftmost, leaf, or in sequential mode)
+
+– Node depth (1 byte): an integer in [0, 255] (set to 0 for the leaves, or in sequential mode)
+
+– Inner hash byte length (1 byte): an integer in [0, 64] for BLAKE2b, and in [0, 32] for BLAKE2s (set to 0 in sequential mode)
+
+""" .
+
+blake:model rdfs:label """ 
+
+G0(v0 ,v4 ,v8 ,v12) 
+G1(v1 ,v5 ,v9 ,v13) 
+G2(v2 ,v6 ,v10,v14) 
+G3(v3 ,v7 ,v11,v15) 
+G4(v0 ,v5 ,v10,v15) 
+G5(v1 ,v6 ,v11,v12) 
+G6(v2 ,v7 ,v8 ,v13) 
+G7(v3 ,v4 ,v9 ,v14)
+
+That is, a round applies a G function to each of the columns in
+parallel, and then to all of the diagonals in parallel. The G function
+of BLAKE2b is defined in §§2.4, and uses the constants in Table 5.
+""" .
