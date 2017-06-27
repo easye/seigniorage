@@ -1,6 +1,8 @@
-(defpackage :org.not.seigniorage 
-  (:nicknames :seigniorage)
+(defpackage seigniorage
+  (:nicknames :org.not.seigniorage)
   (:use #:cl)
+
+  ;;; BTC specific; refactor
   (:export 
    #:fetch
    #:index 
@@ -10,9 +12,4 @@
    ;;; Verify a given block of the blockchain by transcribing its futures
    #:block-verify))
 
-(defpackage :org.not.seigniorage.test 
-  (:nicknames "seigniorage-test")
-  (:use :cl :rt :org.not.seigniorage)
-  (:export 
-   #:invoke))
 

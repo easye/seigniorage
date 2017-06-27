@@ -1,0 +1,353 @@
+# Symbols from the Common Lisp COMMON-LISP and KEYWORD packages.
+@prefix cl:           <urn:common-lisp/packages/common-lisp#> .
+@prefix :             <urn:common-lisp/packages/keyword#> .
+
+
+@prefix evm: <http://rdf.not.org/ethereum/evm#> .
+@prefix ethereum: <http://rdf.not.org/ethereum/#> .
+@prefix op: <http://rdf.not.org/ethereum/evm/opcode#>
+@prefix execution-environment: <http://rdf.not.org/ethereum/evm/execution/environment#> .
+
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+op:stop rdfs:label "Halts execution." .
+op:add rdfs:label "Addition operation." .
+
+[evm:memory _:address]
+  cl:type-of (cl:simple-array (cl:unsigned-byte 8) (32));
+
+evm:execution-environment rdfs:label
+""" 
+9.3. Execution Environment. 
+
+In addition to the sys-tem state σ, and the remaining gas for
+computation g, there are several pieces of important information used
+in the execution environment that the execution agent must provide;
+these are contained in the tuple I:
+
+• Ia, the address of the account which owns the code that is
+  executing.
+
+• Io, the sender address of the transaction that originated this
+  execution.
+
+• Ip, the price of gas in the transaction that originated this
+  execution.
+
+• Id, the byte array that is the input data to this execution; if the
+  execution agent is a transaction, this would be the transaction
+  data.
+
+• Is, the address of the account which caused the code to be
+  executing; if the execution agent is a transaction, this would be
+  the transaction sender.
+
+• Iv, the value, in Wei, passed to this account as part of the same
+  procedure as execution; if the execution agent is a transaction,
+  this would be the transaction value.
+
+• Ib, the byte array that is the machine code to be executed.
+
+• IH , the block header of the present block.
+
+• Ie, the depth of the present message-call or contract-creation
+(i.e. the number of CALLs or CREATEs being executed at present).
+""" .
+
+[evm:execution-environment _:owner-address]
+  rdfs:label """
+• Ia, the address of the account which owns the code that is
+  executing.
+""" ;
+  a ethereum:address .
+
+ethereum:address
+  rdfs:comment "160bit unsigned binary number" ;
+  cl:type-of (cl:simple-array (cl:unsigned-byte 8) (20)) .
+
+op:stop
+  :value "0x00";
+  :δ 0;
+  :α 0;
+  rdfs:label "Halts execution." .
+
+op:add
+  :value "0x01";
+  :δ 2;
+  :α 1;
+  rdfs:label "Addition operation." .
+
+op:mul
+  :value "0x02";
+  :δ 2;
+  :α 1;
+  rdfs:label "Multiplication operation." .
+
+op:sub
+  :value "0x03";
+  :δ 2;
+  :α 1;
+  rdfs:label "Subtraction operation." .
+
+op:div
+  :value "0x04";
+  :δ 2;
+  :α 1;
+  rdfs:label "Integer division." .
+
+op:sdiv
+  :value "0x05";
+  :δ 2;
+  :α 1;
+  rdfs:label "Signed integer division operation (truncated)." ;
+  rdfs:comment
+"""
+μ′[0] 
+  if μ s [1] = 0
+    ≡  0  
+  if μ s [0] = − 2^255 ∧ μ s [1] = − 1     
+    ≡ − 2^255 
+  otherwise
+    ≡ sgn(μ[0] ÷ μ[1]) floor(μ[0] ÷ μ[1])
+
+Where all values are treated as two’s complement signed
+256-bit integers.  
+
+Note the overflow semantic when − 2^255 is negated. 
+""" .
+
+op:mod
+  :value "0x06";
+  :δ 2;
+  :α 1;
+  rdfs:label "Modulo remainder operation." ;
+  rdfs:comment
+""" 
+ μ′[0] 
+  if μ[1] = 0  
+    ≡ 0
+  otherwise
+    ≡ μ[0] mod s[1]    
+Where all values are treated as two’s complement signed 256-bit integers.
+""" .
+
+op:smod
+  :value "0x07";
+  :δ 2;
+  :α 1;
+  rdfs:label "Modulo remainder operation." ;
+  rdfs:comment
+"""
+ μ′[0]  
+   if μ[1]=0
+    ≡ 0                  
+   otherwise
+    ≡ sgn(μ[0])(|μ[0]| mod |μ[1]|)  
+""" .
+
+op:addmod
+  :value "0x08";
+  :δ 3;
+  :α 1;
+  rdfs:label "Modulo addition operation." ;
+  rdfs:comment
+"""
+Modulo addition operation.
+
+μ′[0] 
+  if μ[2]=0 
+    ≡ 0
+  otherwise      
+    ≡ (μ[0] + μ[1]) mod μ[2]
+
+All intermediate calculations of this operation are not subject to the 2^256 modulo.
+""" .
+
+op:mulmod
+  :value "0x09";
+  :δ 3;
+  :α 1;
+  rdfs:label "Modulo multiplication operation." ;
+  rdfs:comment
+"""
+μ′[0] ≡  
+  if μ[2]=0
+    0                          
+  otherwise
+    (μ[0] × μ[1]) mod μ[2]     
+
+All intermediate calculations of this operation are not subject to the 2^256 modulo.
+""" .
+
+op:exp
+  :value "0xa";
+  :δ 2;
+  :α 1;
+  rdfs:label "Exponential operation." ;
+  rdfs:comment
+"""
+μ′[0] ≡ μ[0] ^ μ[1]
+""" .
+
+op:signextend
+  :value "0xb";
+  :δ 2;
+  :α 1;
+  rdfs:label "Extend length of two's complement signed integer." ;
+  rdfs:comment
+"""
+∀i ∈ [0..255] : μ′[0]i
+    where t = 256 − 8(μ[0]+1)
+      ≡ μ[1]t         
+    otherwise
+      ≡ μ[1]i         
+
+Where μ[x]i gives the ith bit (counting from zero) of μ[x].
+""" ;
+  rdfs:seeAlso <https://en.wikipedia.org/wiki/Sign_extension> .
+
+op:lt
+  :δ 2;
+  :value "0x10";
+  :α 1;
+  rdfs:label "Less than comparison." ;
+  rdfs:comment
+"""
+μ′s[0] 
+  if μ [0] < μ [1] 
+    ≡ 1 
+   otherwise    
+    ≡ 0    
+""" .
+
+op:gt
+  :value "0x11";
+  :δ 2;
+  :α 1;
+  rdfs:label "Greater than comparison." ;
+  rdfs:comment
+"""  
+μ′s[0] 
+  if μ [0] > μ [1] 
+    ≡ 1 
+   otherwise    
+    ≡ 0    
+repl""" .
+
+op:slt
+  :value "0x12";
+  :δ 2;
+  :α 1;
+  rdfs:label "Signed less-than comparison." ;
+  rdfs:comment
+"""  
+ μ′[0]
+  if μ[0] < μ[1]
+    ≡ 1
+  otherwise
+    ≡ 0 
+
+Where all values are treated as two’s complement signed 256-bit integers.
+""" .
+
+op:sgt
+  :value "0x13";
+  :δ 2;
+  :α 1;
+  rdfs:label "Signed greater-than comparison." ;
+  rdfs:comment
+"""  
+ μ′[0]
+  if μ[0] > μ[1]
+    ≡ 1
+  otherwise
+    ≡ 0 
+
+Where all values are treated as two’s complement signed 256-bit integers.
+""" .
+
+
+op:eq
+  :value "0x14";
+  :δ 2;
+  :α 1;
+  rdfs:label "Equality comparison." ;
+  rdfs:comment
+""" 
+μ′s[0]
+  if μ[0] = μ[1]
+    ≡ 1 
+  otherwise  
+    ≡ 0
+""" .
+
+op:iszero
+  :value "0x15";
+  :δ 1;
+  :α 1;
+  rdfs:label "Simple not operator." ;
+  rdfs:comment
+"""  
+μ′[0]
+  if μ[0] = 0 
+    ≡ 1
+  otherwise
+    ≡ 0
+""" .
+
+op:and
+  :value "0x16";
+  :δ 2;
+  :α 1;
+  rdfs:label "Bitwise AND operation." .
+
+op:or
+  :value "0x17";
+  :δ 2;
+  :α 1;
+  rdfs:label "Bitwise OR operation." .
+
+op:xor
+  :value "0x18";
+  :δ 2;
+  :α 1;
+  rdfs:label "Bitwise XOR operation." .
+
+op:not
+  :value "0x19";
+  :δ 1;
+  :α 1;
+  rdfs:label "Bitwise NOT operation." .
+
+op:byte
+  :value "0x1a";
+  :δ 2;
+  :α 1;
+  rdfs:label "Retrieves a single byte from word." ;
+  rdfs:comment
+"""
+ ∀i ∈ [0..255] 
+ : μ′[0]i 
+    if i<8 ∧ μ[0]<32  
+      ≡ μ[1](i + 8 μ[0])
+    otherwise 
+      ≡ 0  
+
+  For Nth byte, we count from the left (i.e. N=0 would be the most
+significant in big endian).  
+""" .
+
+op:sha3
+  :value "0x20";
+  :δ 2;
+  :α 1;
+  rdfs:label "Compute Keccak-256 hash." ;
+  rdfs:comment
+"""  
+Compute Keccak-256 hash.
+
+  μ′[0] 
+    ≡ Keccak(μm[μs[0] . . . (μs[0] + μs[1] − 1)]) 
+  μ′i ≡M(μi,μs[0],μs[1])
+""" .  
+

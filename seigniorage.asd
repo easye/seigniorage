@@ -1,46 +1,56 @@
 ;;; -*- Mode: LISP; Syntax: COMMON-LISP -*-
 
-(require :asdf)
-#+abcl
+#-abcl (warn "Currently needs the Bear. <http://abcl.org>.")
 (eval-when (:compile-toplevel :load-toplevel :execute) 
   (require :abcl-contrib)
   (asdf:load-system :quicklisp-abcl))
 
 ;; :documentation "urn:seignorage rdfs:seeAlso <http://abcl.org/home/evenson/bitcoin.lisp> ."
-(asdf:defsystem :seigniorage 
-  :version "0.3.0" 
-  :defsystem-depends-on (rt)
+(defsystem seigniorage 
+  :version "0.4.0" 
+  :depends-on (jeannie)
   :components ((:module src 
                         :components ((:file "package")
-                                     (:file "index")))
-               (:module bitcoin 
-                        :depends-on (src)
-                        :components ((:file "api")))))
+                                     (:file "index"))))
+  :in-order-to ((test-op (test-op seigniorage/t))))
 
-#-abcl (warn "Not loading model: currently need the Bear. <http://abcl.org>.")
-#+abcl
-(asdf:defsystem :seigniorage/model
-  :version "0.0.2" 
-  :defsystem-depends-on (seigniorage
-                         jeannie)  ;;; rdfs:seeAlso <http:/bitbucket.org/easye/jeannie/> 
-  :components ((:module bitcoin 
-                        :components ((:file "model")))))
-  
-(asdf:defsystem :seigniorage/test
-  :version "0.0.1" 
-  :depends-on (seigniorage/model seigniorage)
-  :components ((:module test :pathname "test"
-                        :components ((:file "index")))))
+(defsystem seigniorage/t
+  :version "0.4.0" 
+  :defsystem-depends-on (prove-asdf)
+  :depends-on (seigniorage
+               seigniorage/bitcoin
+               seigniorage/ethereum
+               prove)
 
-;;;  Run manually via (asdf:operate 'asdf:test-op :seigniorage.test :force t)
-(defmethod asdf:perform ((o asdf:test-op) (c (eql (asdf:find-system :seigniorage))))
-  (asdf:load-system (asdf:find-system :seigniorage/test))
-  (funcall (intern (symbol-name 'invoke) :org.not.seigniorage.test)))
+  :components ((:module t
+                        :components ((:test-file "index"))))
+  :perform (test-op (op c)
+                    (uiop:symbol-call :prove-asdf 'run-test-system c)))
 
-(asdf:defsystem :seigniorage/secp256k1
+(defsystem seigniorage/secp256k1
   :version "0.0.1"
-  :depends-on (seigniorage)
-  :components ((:module secp256k1
-                        :serial t
+  :components ((:module source
+                        :pathname "src/secp256k1/"
                         :components ((:file "index")
                                      (:file "secp256k1")))))
+
+(defsystem seigniorage/bitcoin
+  :version "0.0.1"
+  :depends-on (seigniorage/secp256k1)
+  :components ((:module model :pathname "model/"
+                        :components ((:static-file "bitcoin.n3")))
+               (:module source :pathname "src/bitcoin/"
+                        :components ((:file "bitcoin")
+                                     (:file "api")
+                                     (:file "model")))))
+  
+(asdf:defsystem seigniorage/ethereum
+  :version "0.0.1"
+  :components ((:module model 
+                        :components ((:static-file "ethereum.n3")))
+               (:module source :pathname "src/ethereum/"
+                        :components ((:file "model")))))
+
+
+
+

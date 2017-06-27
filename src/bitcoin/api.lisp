@@ -1,4 +1,4 @@
-(in-package :org.not.seigniorage)
+(in-package :btc)
 
 (defgeneric nth-block (nth block)
   (:documentation "Request the NTH BLOCK from from the network")

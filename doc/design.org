@@ -12,4 +12,20 @@ The problem we aim to solve lies in how we trust code to mediate
 relationships, with the application here being the Bitcoin blockchain.
 
 
+Plan of Attack
+--------------
+
+Serialize blockchain models as RDF.  Use this as a source to
+verify/mock implementation behavior.
+
+
+Inspirations
+------------
+
+Transcribe model to futures.  Compile futures into a suitable form for execution.
+
 <https://en.wikipedia.org/wiki/Reactive_programming>
+
+
+
+
