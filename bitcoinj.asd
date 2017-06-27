@@ -1,11 +1,9 @@
-(asdf:defsystem :bitcoinj
+(defsystem bitcoinj
+  :version "0.14.4"
   :defsystem-depends-on (abcl-asdf)
-  ;; :pathname
-  ;; <http://bitcoinj.github.io>
-  ;; "git+https://code.google.com/p/bitcoinj/"
-  :components ((:mvn
-                "org.bitcoinj/bitcoinj-core/0.14.2"
-                #+nil "org.bitcoinj/bitcoinj-core/0.12.3")))
+  :long-description "<git+https://github.com/bitcoinj/bitcoinj.git>"
+  :components ((:mvn "org.bitcoinj/bitcoinj-core/0.14.4")))
+
 
 
 

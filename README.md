@@ -16,13 +16,13 @@ computed via a description of its futures.
 
 Transcribe bitcoinj micro-transactions.
 
-### Bitcoinj 0.12.3
+### Bitcoinj 0.14.4
 
 The ASDF system enacapsulated in <file:bitcoinj.asd> needs locally
 installed [bitcoinj][] Maven artifacts to work, as they are not
 currently distributed over the global network.
 
-[bitcoinj]: git+https://code.google.com/p/bitcoinj/
+[bitcoinj]: git+https://github.com/bitcoinj/bitcoinj.git
 
 ### Colophon
 "Workers of the world, untie!"
