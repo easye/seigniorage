@@ -4,13 +4,14 @@
 # idea, but still it gives a concise definition of what is to be done.
 
 @prefix dc:              <http://purl.org/dc/elements/1.1/> .
-<> dc:updated "02-SEP-2013" .
+<> dc:updated "27-JUN-2017" .
 
-@prefix btc:          <https://btc.not.org#> .
+@prefix btc:          <https://coin.not.org/currency/btc#> .
 
 # Symbols from the Common Lisp COMMON-LISP and KEYWORD packages.
 @prefix cl:           <urn:common-lisp/packages/common-lisp#> .
 @prefix :             <urn:common-lisp/packages/keyword#> .
+@prefix quote:        <urn:common-lisp/packages/quote#> .
 
 # Model of cryptographic algorithms implementations.
 @prefix crypto:       <https://crypto.not.org#> .
@@ -46,7 +47,7 @@ btc:address org.not:note crypto:bigendian .
 #     anonymous nodes here, as they may be anywhere in the document.
 
 [btc:address _:version]
-  cl:type-of "(unsigned-byte 8)" ;
+  cl:type-of (cl:unsigned-byte 8) ;
   ansi-c:type "uint32_t" ;
   rdfs:label "1 byte of 0 (zero); on the test network, this is 1 byte of 111." . # "111" in binary?
 
@@ -63,7 +64,7 @@ btc:address org.not:note crypto:bigendian .
   future:yields
     (cl:subseq (crypto:double-sha-256 _:key-hash)
                0 4) ;
-  cl:type-of "(vector (unsigned-byte 8) 4)" .
+  cl:type-of (cl:vector (cl:unsigned-byte 8) 4) .
 
 [btc:address _:address ]
   future:yields
@@ -95,7 +96,7 @@ btc:message
      _:payload ) .
 
 _:magic 
-  cl:type-of "(integer 2147483648)" ;
+  cl:type-of (cl:integer 2147483648) ;
   rdfs:label """"Magic value indicating message origin network, and used to 
                  seek to next message when stream state is unknown""" .
 
@@ -107,24 +108,24 @@ btc:testnet3 :magic     "0x0709110B" . #    0B 11 09 07
 btc:namecoin :magic     "0xFEB4BEF9" . #    F9 BE B4 FE 
 
 _:command
-  cl:type-of "(simple-base-string 12)" ;
-  cl:assert _:null-padded-string ;
+  cl:type-of (cl:simple-base-string 12) ;
+#  cl:assert _:null-padded-string ;
   rdf:label """ASCII string identifying the packet content, NULL padded 
                (non-NULL padding results in packet rejected)""" .
 
 [btc:message _:length]
   rdfs:label "Length of payload in number of bytes" ;
-  cl:type-of  "(cl:make-array 4 :element-type 'unsigned-byte))" .  
+  cl:type-of (cl:make-array 4 :element-type quote:unsigned-byte) .
 
 [btc:message _:checksum] 
-  cl:type-of "(cl:make-array 4 :element-type 'unsigned-byte))" ;             
+  cl:type-of (cl:make-array 4 :element-type quote:unsigned-byte) ;             
   rdfs:label "First 4 bytes of sha256(sha256(payload))" ;
   future:yields
      (cl:subseq (crypto:sha256 (crypto:sha256 [btc:message _:payload]))
                 0 4) .
 
 [btc:message _:payload]
-   cl:type-of "(vector unsigned-byte *)" ;
+   cl:type-of "(cl:vector cl:unsigned-byte *)" ;
    rdfs:label "The actual data" .
                           
 btc:block-header
@@ -155,7 +156,7 @@ btc:network-address
    rdfs:label "same service(s) listed in version" .
 
 [btc:network-address _:ip] 
-  cl:type-of "(cl:make-array 16 :element-type 'unsigned-byte))" .
+  cl:type-of (cl:make-array 16 :element-type quote:unsigned-byte) .
      
 [btc:network-address _:port] 
   ansi-c:type "uint16_t" .
@@ -270,8 +271,17 @@ nonce_function_rfc6979(unsigned char *nonce32, const unsigned char *msg32, const
 
 btc-ecdsa:p
   a xsd:integer;
-  cl:eval
-"(- (expt 2 256) (expt 2 32) (expt 2 9) (expt 2 8) (expt 2 7) (expt 2 6) (expt 2 4) 1))" .
+  cl:eval """
+(-
+  (cl:expt 2 256)
+  (cl:expt 2 32)
+  (cl:expt 2 9)
+  (cl:expt 2 8)
+  (cl:expt 2 7)
+  (cl:expt 2 6)
+  (cl:expt 2 4)
+ 1)
+""" .
 
 btc-ecdsa:a
   a xsd:integer;

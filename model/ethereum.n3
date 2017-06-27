@@ -2,7 +2,6 @@
 @prefix cl:           <urn:common-lisp/packages/common-lisp#> .
 @prefix :             <urn:common-lisp/packages/keyword#> .
 
-
 @prefix evm: <http://rdf.not.org/ethereum/evm#> .
 @prefix ethereum: <http://rdf.not.org/ethereum/#> .
 @prefix op: <http://rdf.not.org/ethereum/evm/opcode#>
@@ -14,7 +13,7 @@ op:stop rdfs:label "Halts execution." .
 op:add rdfs:label "Addition operation." .
 
 [evm:memory _:address]
-  cl:type-of (cl:simple-array (cl:unsigned-byte 8) (32));
+  cl:type-of (cl:simple-array (cl:unsigned-byte 8) (32)) .
 
 evm:execution-environment rdfs:label
 """ 
