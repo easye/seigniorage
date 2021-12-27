@@ -336,6 +336,41 @@ op:byte
 significant in big endian).  
 """ .
 
+op:shl
+  :value "0x1b";
+  :δ 2;
+  :α 1;
+  rdfs:label "Left shift operation." ;
+  rdfs:comment
+"""  
+μ′s[0] ≡ (μs[1] × 2^(μs[0])) mod 2^256
+""" .
+
+op:shr
+  :value "0x1c";
+  :δ 2;
+  :α 1;
+  rdfs:label "Logical right shift operation." ;
+  rdfs:comment
+"""  
+μ′s[0] ≡ ⌊μs[1] ÷ 2^(μs[0])⌋
+
+""" .
+
+op:sar
+  :value "0x1d";
+  :δ 2;
+  :α 1;
+  rdfs:label "Arithmetic (signed) right shift operation." ;
+  rdfs:comment
+"""
+
+μ′s[0] ≡ ⌊μs[1] ÷ 2^μs[0]⌋
+
+Where μ′s[0] and μs[1] are treated as two’s complement signed 256-bit
+integers, while μs[0] is treated as unsigned.
+""" .
+
 op:sha3
   :value "0x20";
   :δ 2;
@@ -347,6 +382,96 @@ Compute Keccak-256 hash.
 
   μ′[0] 
     ≡ Keccak(μm[μs[0] . . . (μs[0] + μs[1] − 1)]) 
-  μ′i ≡M(μi,μs[0],μs[1])
+  μ′i ≡ M(μi,μs[0],μs[1])
+""" .
+
+op:address
+  :value "0x30";
+  :δ 0;
+  :α 1;
+  rdfs:label "Get address of currently executing account." ; 
+  rdfs:comment
+"""
+ μ′s[0] ≡ Ia
 """ .  
 
+op:balance
+  :value "0x31";
+  :δ 1;
+  :α 1;
+  rdfs:label "Get balance of the given account." ;
+  rdfs:comment
+"""
+
+μ′s[0] 
+  ≡ { 
+
+  if σ[μ [0] mod 2^160] ̸= ∅ 
+
+    σ[μ [0] mod 2^160] 
+
+  otherwise
+
+     0
+}
+    
+A′a ≡ Aa ∪ {μs[0] mod 2^160}
+""" .
+
+
+op:revert
+  :value "0xfd";
+  :δ 2;
+  :α 0;
+  rdfs:label "Halt execution and revert." ;
+  rdfs:comment
+"""
+
+Halt execution reverting state changes but returning data and
+remaining gas. The effect of this operation is described in (138).
+For the gas calculation, we use the memory expansion function,
+
+μ′i ≡M(μi,μs[0],μs[1])
+
+
+""" ;
+     rdfs:comment
+""" 
+(138)
+
+X((σ, μ, A, I))
+
+≡ {
+
+(∅,μ,A,I,∅) if Z(σ,μ,A,I)
+
+(∅,μ,A,I,o) if w = REVERT
+
+O(σ,μ,A,I)·o if if o̸ = ∅
+
+X(O(σ,μ,A,I)) otherwise
+
+}
+
+where
+
+(139) 
+
+o ≡ H(μ,I)
+
+
+(140)
+
+(a,b,c,d) · e  ≡ (a,b,c,d,e)
+
+
+(141)
+
+μ′ ≡ μ  except:
+
+
+(142)
+
+μ′g ≡ μg −C(σ,μ,A,I)
+
+""" .
